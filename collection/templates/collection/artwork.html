@@ -48,8 +48,7 @@
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen"></span>&#8203;
         <div
             class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <!-- Aqui es donde podra seleccionar las colleciones  -->
-            <div class="bg-gray-50 px-4 py-5 sm:p-6">
+                        <div class="bg-gray-50 px-4 py-5 sm:p-6">
                 <h3 class="text-lg leading-6 font-medium text-gray-900">Selecciona una colección</h3>
                 <div class="mt-2">
                     <form id="addToCollectionForm" method="post" action="{% url 'add_to_collection' artwork.id %}">
@@ -76,7 +75,6 @@
         </div>
     </div>
 </div>
-<!-- Mensaje de notificacion que se guardo la pintura text-black-->
 <div id="notification" class="hidden fixed inset-0 z-10 overflow-y-auto">
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
@@ -105,8 +103,7 @@
         document.getElementById('notification').classList.remove('hidden');
         setTimeout(() => {
             hideNotification();
-        }, 2000); // Ocultar la notificación después de 1 segundos
-    }
+        }, 2000);     }
 
     function hideNotification() {
         document.getElementById('notification').classList.add('hidden');
