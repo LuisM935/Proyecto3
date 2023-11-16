@@ -1,0 +1,13 @@
+{% extends "collection/base.html" %}
+
+{% block content %}
+  <h1 class="block pl-5 text-2xl text-black" >Pinturas en la colección "{{ collection.name }}"</h1>
+  
+  {% for artwork in artworks %}
+      <div>
+        <img src="{{artwork.image_url}}" alt="{{artwork.title}}" />
+        <p class="block pl-5 text-2xl text-sky-600">{{ artwork.title }}</p>
+        <a href="#" class="block pl-5 text-2xl text-sky-600 "> {{artwork.author.name}} </a>
+    </div>
+  {% endfor %}
+{% endblock %}

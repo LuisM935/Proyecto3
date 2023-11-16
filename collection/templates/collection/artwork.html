@@ -1,0 +1,122 @@
+{% extends "collection/base.html" %}
+{% block content %}
+<div class="container flex mx-auto px-5 py-2 lg:px-32 lg:pt-12 ">
+    <div class="overflow-hidden rounded-lg bg-white shadow w-1/2 h-full">
+        <div class="px-4 py-5 sm:p-6">
+            <div class="w-full p-1 md:p-2">
+                <img class="block h-full w-full rounded-lg object-cover object-center" src="{{artwork.image_url}}"
+                    alt="{{artwork.title}}"/>
+            </div>
+        </div>
+        <div class="bg-gray-50 px-4 py-4 sm:px-6">
+            <div class="flex justify-end items-center">
+            </div>
+            <div class=" -m-1 h-12 mt-1 mb-5 ">
+                <p class="mt-3 pl-8 text-black font-thin"> Data from: </p>
+                <a href="https://www.wikiart.org{{artwork.path}}" class="block overflow-hidden
+                        text-ellipsis pl-5 text-sky-600 pb-5"> www.wikiart.org{{artwork.path}} </a>
+            </div>
+        </div>
+    </div>
+    <div class="overflow-hidden w-1/3 h-auto">
+        <div class="px-4 py-4 sm:px-6">
+            <div class=" -m-1 h-10 mt-1 mb-5">
+                <p class="block overflow-hidden
+                        text-ellipsis pl-5 dark:text-black text-3xl font-bold"> {{artwork.title}} </p>
+                <a href="/artwork/artist/{{artwork.author.id}}" class=" pl-5 text-2xl text-black"> {{artwork.author.name}} </a>
+                <p class="mt-3 pl-8 text-amber-900 font-bold"> Date: {{artwork.date}} </p>
+                <p class="mt-2 pl-8 text-amber-900 font-bold"> Style: {{artwork.style.name}} </p>
+                <p class="mt-2 pl-8 text-amber-900 font-bold"> Period: {{artwork.period.name}} </p>
+                <p class="mt-3 pl-8 text-amber-900 font-bold"> Genre: {{artwork.genre.name}} </p>
+                 <button onclick="showCollectionModal()"class="block rounded-md bg-orange-600 px-3
+                    py-2 text-center text-sm font-semibold text-white 
+                    shadow-sm hover:bg-orange-500 focus-visible:outline 
+                    focus-visible:outline-2 focus-visible:outline-offset-2 
+                    focus-visible:outline-indigo-600 ml-8 mt-3" >Guardar
+                 </button>
+            </div>
+        </div>
+    </div>
+ </div>
+
+<div id="collectionModal" class="hidden fixed inset-0 z-10 overflow-y-auto">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+
+        <div class="fixed inset-0 transition-opacity">
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen"></span>&#8203;
+        <div
+            class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <!-- Aqui es donde podra seleccionar las colleciones  -->
+            <div class="bg-gray-50 px-4 py-5 sm:p-6">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Selecciona una colección</h3>
+                <div class="mt-2">
+                    <form id="addToCollectionForm" method="post" action="{% url 'add_to_collection' artwork.id %}">
+                        {% csrf_token %}
+                        <label for="collection_id">Colección:</label>
+                        <select name="collection_id">
+                            {% for collection in collections %}
+                            <option value="{{ collection.id }}">{{collection.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-4 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button onclick="hideCollectionModal()" type="button"
+                    class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-gray-200 sm:mt-0 sm:w-auto sm:ml-3 sm:text-sm">
+                    Cancelar
+                </button>
+                <button onclick="addToCollection()" type="button"
+                    class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-gray-200 sm:mt-0 sm:w-auto sm:ml-3 sm:text-sm">
+                    Agregar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Mensaje de notificacion que se guardo la pintura text-black-->
+<div id="notification" class="hidden fixed inset-0 z-10 overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        <div
+            class="inline-block align-bottom bg-amber-200 rounded-lg shadow-md text-left overflow-hidden transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full">
+            <section class="rounded-lg shadow-md">
+              <div class="p-6 text-center sm:p-8">
+                <h2 class="mt-4 text-xl font-bold">
+                    Guardado con éxito
+                </h2>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<script>
+    function showCollectionModal() {
+        document.getElementById('collectionModal').classList.remove('hidden');
+    }
+
+    function hideCollectionModal() {
+        document.getElementById('collectionModal').classList.add('hidden');
+    }
+
+    function showNotification() {
+        document.getElementById('notification').classList.remove('hidden');
+        setTimeout(() => {
+            hideNotification();
+        }, 2000); // Ocultar la notificación después de 1 segundos
+    }
+
+    function hideNotification() {
+        document.getElementById('notification').classList.add('hidden');
+    }
+
+    function addToCollection() {
+        showNotification();
+        hideCollectionModal();
+        document.getElementById('addToCollectionForm').submit();
+    }
+</script>
+
+{% endblock content %}

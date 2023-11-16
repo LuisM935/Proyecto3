@@ -1,0 +1,10 @@
+{% extends "collection/base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-5 py-2 lg:px-32 lg:pt-12">
+    <div class="bg-white shadow rounded-lg p-6">
+        <h1 class="text-3xl font-bold">{{ artist.name }}</h1>
+        <p>Born: {{ artist.born_date }}</p>
+    </div>
+</div>
+{% endblock content %}
